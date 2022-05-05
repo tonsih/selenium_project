@@ -1,30 +1,43 @@
 import org.openqa.selenium.WebDriver;
-        import org.openqa.selenium.chrome.ChromeDriver;
-        import org.testng.annotations.AfterSuite;
-        import org.testng.annotations.BeforeSuite;
-        import org.testng.annotations.Test;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
 
 public class TestPlan {
-    private static final WebDriver driver = new ChromeDriver();
+    static ChromeOptions options = new ChromeOptions().addArguments("incognito");
+    private static final WebDriver driver = new ChromeDriver(options);
 
     @BeforeSuite
     public static void main(String[] args) {
-        // ChromeDriver location set up in Utils class
-        System.setProperty("webdriver.chrome.driver", Utils.CHROME_DRIVER_LOCATION);
+        System.setProperty("webdriver.chrome.driver", "chromedriver");
     }
 
-    @Test(testName = "Submit a WebForm")
-    public static void submitForm(){
-        driver.get(Utils.BASE_URL);
-        WebForm webForm = new WebForm(driver);
-        webForm.enterFirstName();
-        webForm.enterLastName();
-        webForm.pressSubmitButton();
+    @Test(testName = "Open Youtube")
+    public static void openYoutube(){
+        driver.get("https://www.youtube.com/");
+        ElementsAndActions elementsAndActions = new ElementsAndActions(driver);
+    }
+
+    @Test(testName = "Go to Youtube and accept all", dependsOnMethods = "openYoutube")
+    public static void acceptAll(){
+        ElementsAndActions elementsAndActions = new ElementsAndActions(driver);
+        elementsAndActions.waitForCookies();
+        elementsAndActions.acceptCookies();
+    }
+
+    @Test(testName = "Find cute sloths", dependsOnMethods = "acceptAll")
+    public static void findCuteSloths(){
+        ElementsAndActions elementsAndActions = new ElementsAndActions(driver);
+        elementsAndActions.waitForSearchBar();
+        elementsAndActions.typeSearchText();
+        elementsAndActions.submitSearch();
     }
 
     @AfterSuite
     public static void cleanUp(){
         driver.manage().deleteAllCookies();
-        driver.close();
+    //    driver.close();
     }
 }
