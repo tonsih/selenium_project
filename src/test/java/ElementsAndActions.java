@@ -1,6 +1,7 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,8 +19,14 @@ public class ElementsAndActions extends PageObject{
     @FindBy(id = "search-icon-legacy")
     private WebElement submitButton;
 
-    @FindBy(css = "[aria-label='Godkänn att cookies och annan data används för" +
-            " de ändamål som beskrivs']")
+    // Checks for both english and swedish versions of the 'accept cookies' button label
+    @FindAll(
+            {
+                    @FindBy(css = "[aria-label='Godkänn att cookies och annan data används för de ändamål som beskrivs']"),
+
+                    @FindBy(css = "[aria-label='Accept the use of cookies and other data for the purposes described']")
+            }
+    )
     private WebElement cookiesOk;
 
     public ElementsAndActions(WebDriver driver) {

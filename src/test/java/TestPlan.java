@@ -17,7 +17,7 @@ public class TestPlan {
     @Test(testName = "Open Youtube")
     public static void openYoutube(){
         driver.get("https://www.youtube.com/");
-        ElementsAndActions elementsAndActions = new ElementsAndActions(driver);
+        new ElementsAndActions(driver);
     }
 
     @Test(testName = "Go to Youtube and accept all", dependsOnMethods = "openYoutube")
